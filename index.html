@@ -49,9 +49,9 @@
 <main>
   <div class="diag-card">
     <form id="diag-form" novalidate>
-      <label for="url-input" class="visually-hidden">診断するURL</label>
+      <label for="url-input" class="input-label">診断するURL<span class="hint">トップページを入れるとサイト単位、下層ページを入れるとそのページ単体の診断になります</span></label>
       <div class="url-row">
-        <input id="url-input" type="url" inputmode="url" placeholder="https://example.com/products/12345" autocomplete="url" spellcheck="false" required>
+        <input id="url-input" type="url" inputmode="url" autocomplete="url" spellcheck="false" required>
         <button type="submit" class="btn btn-primary">診断する</button>
         <button type="button" class="btn" data-open-paste>HTMLを貼り付け</button>
       </div>
@@ -65,11 +65,6 @@
           </select>
         </label>
       </div>
-      <p class="samples">
-        <span>例:</span>
-        <button type="button" class="btn btn-ghost btn-xs" data-sample="https://dwmall.westjr.co.jp/">通販モール</button>
-        <button type="button" class="btn btn-ghost btn-xs" data-sample="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide">Google公式AI最適化ガイド</button>
-      </p>
     </form>
 
     <div class="progress" id="progress" hidden>
@@ -153,8 +148,8 @@
     <strong>開発者ツールの Elements パネルからコピーしないでください</strong> — そちらはJS実行後のDOMであり、AIクローラーが見ているものとは異なります。
   </p>
   <form id="paste-form">
-    <label class="field"><span>対象URL</span><input id="paste-url" type="url" placeholder="https://example.com/page" required></label>
-    <label class="field"><span>HTMLソース</span><textarea id="paste-html" placeholder="&lt;!doctype html&gt;…" spellcheck="false" style="min-height:190px"></textarea></label>
+    <label class="field"><span>対象URL<span class="hint">robots.txt と sitemap.xml の取得、および内部リンクの判定に使います</span></span><input id="paste-url" type="url" required></label>
+    <label class="field"><span>HTMLソース<span class="hint">ページのソース(Ctrl+U)をそのまま貼り付けてください</span></span><textarea id="paste-html" spellcheck="false" style="min-height:190px"></textarea></label>
     <div class="dialog-actions">
       <button type="button" class="btn btn-ghost" id="paste-cancel">キャンセル</button>
       <button type="submit" class="btn btn-primary">この内容で診断</button>

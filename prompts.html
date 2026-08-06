@@ -55,7 +55,7 @@
             <option value="media">メディア・情報サイト</option>
           </select>
         </label>
-        <label class="field"><span>自社ブランド名(観測対象)</span><input id="in-brand" type="text" placeholder="例: DISCOVER WEST mall"></label>
+        <label class="field"><span>自社ブランド名(観測対象)<span class="hint">AIの回答にこの名前が出たかを記録します</span></span><input id="in-brand" type="text"></label>
       </div>
       <div class="grid-2">
         <label class="field"><span>コア変数(What)<span class="hint">探している商品・サービスそのもの</span></span><textarea id="in-what"></textarea></label>
@@ -66,7 +66,7 @@
         <label class="field"><span>Why<span class="hint">課題・目的・不確実性(Problem State / Uncertainty)</span></span><textarea id="in-why"></textarea></label>
       </div>
       <div class="grid-2">
-        <label class="field"><span>競合ブランド(任意・比較用メモ)</span><input id="in-competitors" type="text" placeholder="例: 競合A, 競合B"></label>
+        <label class="field"><span>競合ブランド(任意)<span class="hint">比較用のメモとして保存されます。カンマ区切り</span></span><input id="in-competitors" type="text"></label>
         <label class="field"><span>生成件数の上限</span>
           <select id="gen-limit">
             <option value="30">30件</option>
