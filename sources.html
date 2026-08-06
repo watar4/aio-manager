@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>判定基準と出典 — AIO Manager</title>
+<meta name="description" content="スコアの重み付け・全チェック項目・根拠となる2026年公開の出典を全件開示しています。">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="./assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>✦</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <strong>AIO Manager</strong>
+      <span>SEO / AIO / LLMO</span>
+    </a>
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a href="./index.html">サイト診断</a>
+      <a href="./prompts.html">プロンプト設計・可視性観測</a>
+      <a href="./checklist.html">オフサイト自己診断</a>
+      <a href="./sources.html">判定基準と出典</a>
+    </nav>
+    <button type="button" class="theme-btn" data-theme-toggle aria-label="テーマ切替">☾</button>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <p class="eyebrow">METHODOLOGY</p>
+    <h1>判定基準と出典</h1>
+    <p class="sub">
+      スコアの配分・全チェック項目・根拠となる出典をすべて開示しています。方針は<strong>2026年に公開・発表された情報のみを引用する</strong>ことです。
+      2025年以前の調査は、2026年の一次情報に置き換えるか、2026年公開のサーベイ論文経由での言及にとどめています。
+      判定の凡例は【事実】=一次情報・公開データ、【参考】=集計系メディア経由で一次データに到達できていない数値です。
+    </p>
+  </div>
+
+  <section class="card">
+    <p class="eyebrow">WEIGHTING</p>
+    <h2 class="card-title">スコアの考え方</h2>
+    <p class="card-lead">
+      100点満点を6カテゴリに配分しています。配分の根拠は「2026年の実証データで、AI可視性への寄与がどれだけ確認されているか」です。
+      最大の重みを AI可読性(レンダリング)に置いているのは、AIクローラーの69%がJavaScriptを実行できず、ここが落ちていると他の施策が届かないためです。
+      逆に、効果が確認されていない施策(llms.txt)は<strong>意図的に加点対象から外しています</strong>。
+    </p>
+    <div id="weights"></div>
+  </section>
+
+  <section class="card">
+    <p class="eyebrow">NOT SCORED</p>
+    <h2 class="card-title">加点しない項目(2026年の実証で効果が確認されていない施策)</h2>
+    <p class="card-lead">優先順位を誤らないことが、この診断の重要な役割です。「やっても効かない」ことが実証された施策を加点対象にすると、限られた工数の配分を歪めます。</p>
+    <div id="nonscoring"></div>
+  </section>
+
+  <section class="card">
+    <p class="eyebrow">ALL CHECKS</p>
+    <h2 class="card-title">全チェック項目と根拠</h2>
+    <p class="card-lead">P0=即着手 / P1=3か月以内 / P2=6か月〜。優先度はカンファレンスで示された論点の緊急度と、実装の前提関係から決めています。</p>
+    <div id="rules"></div>
+  </section>
+
+  <section class="card">
+    <p class="eyebrow">CRAWLERS</p>
+    <h2 class="card-title">AIクローラーと索引の対応</h2>
+    <p class="card-lead">
+      ChatGPT・Copilot は Bing インデックス、Claude は Brave、Gemini・AI Overviews は Google を利用します(BrightonSEO 2026 / Ryan Law)。
+      したがって<strong>従来検索での順位実績そのものがAI被引用の強い予測指標</strong>であり、基礎SEOの継続が最短経路になります。
+      「検索・回答経路」に該当するボットを遮断すると回答に登場しなくなるため、学習用途のブロックとは分けて判断してください。
+    </p>
+    <div id="bots"></div>
+  </section>
+
+  <div id="sources"></div>
+
+  <section class="card">
+    <p class="eyebrow">LIMITATIONS</p>
+    <h2 class="card-title">この診断の限界</h2>
+    <ul style="font-size:13.5px;color:var(--ink-2);margin:0;padding-left:20px">
+      <li><strong>各AIプラットフォームの内部評価値ではありません。</strong>公開された実証データから逆算した相対評価です。</li>
+      <li><strong>1ページ単位の診断です。</strong>サイト全体を評価するには、テンプレートごとに代表URLを診断してください(トップ / カテゴリ / 商品詳細 / 記事 / FAQ)。</li>
+      <li><strong>オフサイトは自己申告です。</strong>AI検索でのブランド言及の85%が第三者由来であるにもかかわらず、その量はURL単体では測れません。実際の言及量は外部ツールでの実測が必要です。</li>
+      <li><strong>スキーマの効果はプラットフォームで逆方向に出ます。</strong>Otterly AI の統制実験では Google AI Overviews +611% に対し ChatGPT ▲71%。本診断は「Google経路のレバー」として構造化データを評価しており、ChatGPT対策としては評価していません。</li>
+      <li><strong>プロンプト言及率の絶対値は信用できません。</strong>プロンプトボリューム推定は監査不可能とされ、引用ドメインは毎月40〜60%入れ替わります。推移と競合比で読んでください。</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>出典URLは外部サイトへのリンクです。リンク先の内容は各サイトの管理者に帰属します。</p>
+  </div>
+</footer>
+
+<script type="module" src="./assets/js/sources-page.js"></script>
+</body>
+</html>

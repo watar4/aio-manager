@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プロンプト設計・可視性観測 — AIO Manager</title>
+<meta name="description" content="CEP(カテゴリーエントリーポイント)から想定プロンプトを量産し、AI検索での自社言及率を月次で定点観測します。">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="./assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>✦</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <strong>AIO Manager</strong>
+      <span>SEO / AIO / LLMO</span>
+    </a>
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a href="./index.html">サイト診断</a>
+      <a href="./prompts.html">プロンプト設計・可視性観測</a>
+      <a href="./checklist.html">オフサイト自己診断</a>
+      <a href="./sources.html">判定基準と出典</a>
+    </nav>
+    <button type="button" class="theme-btn" data-theme-toggle aria-label="テーマ切替">☾</button>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <p class="eyebrow">PROMPT DESIGN &amp; TRACKING</p>
+    <h1>プロンプト設計と可視性の定点観測</h1>
+    <p class="sub">
+      AI検索での可視性は、キーワードではなく<strong>文脈を含んだプロンプト</strong>単位で決まります。ここでは CEP(カテゴリーエントリーポイント)を
+      「コア変数 × 誰が × いつどこで × なぜ」に分解して想定プロンプトを量産し、各AIでの自社言及率を月次で記録します。
+      AI引用の可視性を能動的に追跡しているマーケターは<strong>14%のみ</strong>という調査があり、追跡体制を持つこと自体が差別化になります。
+    </p>
+  </div>
+
+  <section class="card">
+    <p class="eyebrow">STEP 01 — CEP</p>
+    <h2 class="card-title">プロンプトを設計する</h2>
+    <p class="card-lead">
+      シードを2〜4個入れて10〜12ワード相当のプロンプトへ拡張する手順(BrightonSEO 2026 / Dr Pete Meyers)を、日本語向けのテンプレートで実装しています。
+      1行に1項目を入力してください。Semrush の実験では、1つのCEPから生まれた表現が数十通り違っても、AIは同じ記事を引用し続けました。
+    </p>
+    <form id="gen-form">
+      <div class="grid-2">
+        <label class="field"><span>業種プリセット</span>
+          <select id="preset">
+            <option value="regional">EC・地域産品/お取り寄せ</option>
+            <option value="saas">BtoB SaaS</option>
+            <option value="local">実店舗・サービス業</option>
+            <option value="media">メディア・情報サイト</option>
+          </select>
+        </label>
+        <label class="field"><span>自社ブランド名(観測対象)</span><input id="in-brand" type="text" placeholder="例: DISCOVER WEST mall"></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>コア変数(What)<span class="hint">探している商品・サービスそのもの</span></span><textarea id="in-what"></textarea></label>
+        <label class="field"><span>Who<span class="hint">誰が探しているか(属性・立場)</span></span><textarea id="in-who"></textarea></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>When / Where<span class="hint">利用シーン・きっかけの瞬間(Trigger Moment)</span></span><textarea id="in-when"></textarea></label>
+        <label class="field"><span>Why<span class="hint">課題・目的・不確実性(Problem State / Uncertainty)</span></span><textarea id="in-why"></textarea></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>競合ブランド(任意・比較用メモ)</span><input id="in-competitors" type="text" placeholder="例: 競合A, 競合B"></label>
+        <label class="field"><span>生成件数の上限</span>
+          <select id="gen-limit">
+            <option value="30">30件</option>
+            <option value="50" selected>50件</option>
+            <option value="80">80件</option>
+            <option value="100">100件</option>
+          </select>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary">プロンプトを生成</button>
+    </form>
+    <div id="gen-results" style="margin-top:20px"></div>
+  </section>
+
+  <section class="card" id="tracker">
+    <p class="eyebrow">STEP 02 — TRACKING</p>
+    <h2 class="card-title">AIでの言及を記録する</h2>
+    <p class="card-lead">
+      観測は「同じプロンプト群を、同じAIで、毎月」行うのが原則です。プロンプトボリュームの推定値は監査不可能で一貫性がないと指摘されているため
+      (BrightonSEO 2026 / Cosmin Negrescu)、<strong>絶対値ではなく自社の推移と競合比で読んでください</strong>。
+      引用ドメインは毎月40〜60%が入れ替わるとされ、単月のスコアは揺れます。
+    </p>
+    <div id="tracker-body"></div>
+    <div id="trend" style="margin-top:24px"></div>
+  </section>
+
+  <section class="card">
+    <p class="eyebrow">STEP 03 — KPI</p>
+    <h2 class="card-title">可視性をKPIとして扱う</h2>
+    <p class="card-lead">SMX Advanced 2026 で示された前提は「AI経由トラフィックは失われたオーガニッククリックを代替しない」です。流入の代替を期待せず、可視性を独立したKPIとして持つ設計にしてください。</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th scope="col">階層</th><th scope="col">指標</th><th scope="col">測定方法</th><th scope="col">根拠</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">KGI</th><td>ブランド指名検索数(月次)</td><td>Search Console。AI引用獲得後30日間のリフトを見る</td><td>AI引用を獲得したブランドは続く30日間で指名検索が23%増加</td></tr>
+        <tr><th scope="row">KGI</th><td>「AIで知った」比率</td><td>購入・問い合わせ後アンケートに選択肢を1つ追加</td><td>自己申告アトリビューションはデジタル計測が取りこぼす30〜50%を捕捉</td></tr>
+        <tr><th scope="row">KPI</th><td>想定プロンプト50〜100件での自社言及率</td><td>このページで月次記録。推移と競合比で評価</td><td>可視性がトラフィックに代わる中心指標へ(Eli Goodman)</td></tr>
+        <tr><th scope="row">KPI</th><td>言及時の内容の正確性</td><td>同じ観測時に回答文を保存し、事業内容・価格帯・ジャンルの記述を確認</td><td>AIは事実をライブソースに照合しない。誤認は第三者ソース側から直す</td></tr>
+        <tr><th scope="row">KPI</th><td>AI参照元からの流入・購入率</td><td>GA4で chatgpt.com / perplexity.ai / copilot / gemini をセグメント化</td><td>参考指標。流入量を主KPIに据えない</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>入力内容と観測記録はこの端末のブラウザ(localStorage)にのみ保存されます。AIサービスへのリンクは、そのサービスの検索画面をプロンプト入力済みで開くだけのものです。</p>
+    <p><a href="./sources.html">判定基準と出典</a></p>
+  </div>
+</footer>
+
+<script type="module" src="./assets/js/prompts.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIO Manager — SEO / AIO / LLMO 診断</title>
+<meta name="description" content="URLを入力するだけで、AI検索(ChatGPT・Google AI Mode・Perplexity等)からの可視性を診断します。判定基準はすべて2026年公開の実証データに紐づいています。">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="AIO Manager — SEO / AIO / LLMO 診断">
+<meta property="og:description" content="AI可視性スコアと、優先度付きの対策リストを出力します。">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="./assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>✦</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <strong>AIO Manager</strong>
+      <span>SEO / AIO / LLMO</span>
+    </a>
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a href="./index.html">サイト診断</a>
+      <a href="./prompts.html">プロンプト設計・可視性観測</a>
+      <a href="./checklist.html">オフサイト自己診断</a>
+      <a href="./sources.html">判定基準と出典</a>
+    </nav>
+    <button type="button" class="theme-btn" data-theme-toggle aria-label="テーマ切替">☾</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">AI VISIBILITY DIAGNOSIS</p>
+    <h1>AIのおすすめに、あなたのページを。</h1>
+    <p class="lead">
+      入力されたURLを <strong>JavaScriptを実行せずに</strong> 取得し、AIクローラーが実際に読んでいる内容を再現して評価します。
+      これは制約ではなく仕様です — 2026年のSMX Advancedで報告されたとおり、<strong>AIクローラーの69%はJavaScriptを実行できません</strong>。
+      判定基準・重み付け・推奨アクションはすべて<a href="./sources.html">2026年公開の一次情報</a>に紐づいています。
+    </p>
+    <div class="engine-row">
+      <span class="label">対応AI</span>
+      <span>ChatGPT</span><span>Google AI Mode</span><span>AI Overviews</span><span>Perplexity</span><span>Claude</span><span>Copilot</span>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="diag-card">
+    <form id="diag-form" novalidate>
+      <label for="url-input" class="visually-hidden">診断するURL</label>
+      <div class="url-row">
+        <input id="url-input" type="url" inputmode="url" placeholder="https://example.com/products/12345" autocomplete="url" spellcheck="false" required>
+        <button type="submit" class="btn btn-primary">診断する</button>
+        <button type="button" class="btn" data-open-paste>HTMLを貼り付け</button>
+      </div>
+      <div class="opt-row">
+        <label class="check-inline"><input type="checkbox" id="crawl-toggle" checked>トップページを入れたら配下ページもまとめて診断する</label>
+        <label class="field-inline">診断ページ数
+          <select id="crawl-limit">
+            <option value="5">5ページ</option>
+            <option value="10" selected>10ページ</option>
+            <option value="15">15ページ</option>
+          </select>
+        </label>
+      </div>
+      <p class="samples">
+        <span>例:</span>
+        <button type="button" class="btn btn-ghost btn-xs" data-sample="https://dwmall.westjr.co.jp/">通販モール</button>
+        <button type="button" class="btn btn-ghost btn-xs" data-sample="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide">Google公式AI最適化ガイド</button>
+      </p>
+    </form>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track"><div class="progress-fill" id="progress-bar"></div></div>
+      <div class="progress-row">
+        <p id="progress-msg">取得中…</p>
+        <button type="button" class="btn btn-ghost btn-sm" id="cancel-btn" hidden>ここまでで中断する</button>
+      </div>
+      <p class="muted" id="progress-sub" style="font-size:12px;margin:2px 0 0;overflow-wrap:anywhere"></p>
+    </div>
+    <div class="error-box" id="error-box" hidden></div>
+  </div>
+
+  <div class="export-bar" id="export-bar" hidden>
+    <span class="label">Export</span>
+    <button type="button" class="btn btn-sm" id="btn-md">Markdownで保存</button>
+    <button type="button" class="btn btn-sm" id="btn-copy">Markdownをコピー</button>
+    <button type="button" class="btn btn-sm" id="btn-json">JSONで保存</button>
+    <button type="button" class="btn btn-sm" id="btn-print">印刷 / PDF</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="btn-open-all">すべて開く</button>
+  </div>
+
+  <div id="results"></div>
+
+  <section class="card" id="history" hidden></section>
+
+  <section class="card">
+    <p class="eyebrow">SCOPE</p>
+    <h2 class="card-title">この診断で分かること / 分からないこと</h2>
+    <div class="grid-2">
+      <div>
+        <h3 style="font-size:13.5px;margin-bottom:8px">分かること(自動測定)</h3>
+        <ul style="font-size:13.5px;color:var(--ink-2);margin:0;padding-left:20px">
+          <li>JavaScriptなしでAIに見えている本文・見出しの実体</li>
+          <li>構造化データの実装状況と、<strong>スキーマにしか書かれていない情報</strong>の検出</li>
+          <li>robots.txt でのAIクローラー許可状況(検索経路 / 学習用を区別)</li>
+          <li>ファンアウトクエリへの対応度、検証可能な数値の密度</li>
+          <li>AICAS の Confirm(確認)段階で必要な情報の充足度</li>
+          <li>テンプレート別の傾向 — 配下ページをまとめて診断した場合</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:13.5px;margin-bottom:8px">分からないこと(別手段が必要)</h3>
+        <ul style="font-size:13.5px;color:var(--ink-2);margin:0;padding-left:20px">
+          <li>第三者サイトでの言及量 — AI検索でのブランド言及の<strong>85%は第三者ソース由来</strong>です。<a href="./checklist.html">オフサイト自己診断</a>で評価してください</li>
+          <li>実際のAI回答での自社の登場率 — <a href="./prompts.html">プロンプト観測</a>で月次の定点観測を行ってください</li>
+          <li>JS実行後にしか現れない要素(このツールは意図的に実行しません)</li>
+          <li>実際の検索順位 — 配下ページの選定は sitemap・内部リンク・グローバルナビからの推定です</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <p class="eyebrow">HOW PAGES ARE PICKED</p>
+    <h2 class="card-title">配下ページはどう選ばれるか</h2>
+    <p class="card-lead">
+      検索APIはブラウザから直接叩けないため(キーとCORSの制約)、「ドメインで検索したときの上位」を次の3つの信号で近似しています。
+      実際の検索順位とは一致しませんが、<strong>サイトが自ら重要と位置づけているページ</strong>を選ぶため、テンプレート単位の傾向を掴む目的では実用的です。
+    </p>
+    <div class="grid-2">
+      <ul style="font-size:13.5px;color:var(--ink-2);margin:0;padding-left:20px">
+        <li><strong>sitemap.xml</strong> に載っている(サイト側が収録を宣言したURL。並び順も重要度の手がかりとして使用)</li>
+        <li><strong>トップページからのリンク</strong>(内部リンクは重要度の主張そのもの)</li>
+        <li><strong>グローバルナビ</strong>に入っている(サイト構造上の主要導線)</li>
+      </ul>
+      <ul style="font-size:13.5px;color:var(--ink-2);margin:0;padding-left:20px">
+        <li>カート・ログイン・検索結果・PDF・ページネーションは除外</li>
+        <li>同じURLパターン(テンプレート)からは<strong>最大2件まで</strong>。商品詳細ばかり並ばないようにして診断範囲を広げます</li>
+        <li>取得に失敗したページはスキップし、レポート末尾に理由付きで記録します</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<dialog id="paste-dialog">
+  <h2>HTMLソースを貼り付けて診断</h2>
+  <p>
+    WAFやCloudflareが外部プロキシからのアクセスを拒否している場合に使います。ブラウザで対象ページを開き
+    <code>Ctrl+U</code>(ページのソースを表示)→ 全選択 → コピーしたものを貼り付けてください。
+    <strong>開発者ツールの Elements パネルからコピーしないでください</strong> — そちらはJS実行後のDOMであり、AIクローラーが見ているものとは異なります。
+  </p>
+  <form id="paste-form">
+    <label class="field"><span>対象URL</span><input id="paste-url" type="url" placeholder="https://example.com/page" required></label>
+    <label class="field"><span>HTMLソース</span><textarea id="paste-html" placeholder="&lt;!doctype html&gt;…" spellcheck="false" style="min-height:190px"></textarea></label>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-ghost" id="paste-cancel">キャンセル</button>
+      <button type="submit" class="btn btn-primary">この内容で診断</button>
+    </div>
+  </form>
+</dialog>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>入力したURLと診断結果はこの端末のブラウザ(localStorage)にのみ保存されます。診断サーバーはありません。ページの取得のみ公開CORSプロキシを経由します。</p>
+    <p>スコアは2026年公開の実証データに基づく相対評価であり、各AIプラットフォームの内部的な評価値ではありません。<a href="./sources.html">判定基準と出典</a></p>
+  </div>
+</footer>
+
+<script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>オフサイト自己診断 — AIO Manager</title>
+<meta name="description" content="AI検索でのブランド言及の85%は第三者ソース由来。URLでは測れないオフサイト領域を、出典に紐づいた設問で自己評価します。">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="./assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>✦</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <strong>AIO Manager</strong>
+      <span>SEO / AIO / LLMO</span>
+    </a>
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a href="./index.html">サイト診断</a>
+      <a href="./prompts.html">プロンプト設計・可視性観測</a>
+      <a href="./checklist.html">オフサイト自己診断</a>
+      <a href="./sources.html">判定基準と出典</a>
+    </nav>
+    <button type="button" class="theme-btn" data-theme-toggle aria-label="テーマ切替">☾</button>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <p class="eyebrow">OFFSITE ASSESSMENT</p>
+    <h1>オフサイト自己診断</h1>
+    <p class="sub">
+      2026年のカンファレンス群が共通して示したのは「<strong>主戦場はオンサイトからオフサイト(第三者による言及)へ移った</strong>」という結論です。
+      AI検索におけるブランド言及の85%は第三者ソース由来で、75,000ブランド調査では YouTube 上の言及が全シグナル中で最強の相関(約0.737)でした。
+      この領域はURLからは測定できないため、設問形式で評価します。回答はこの端末にのみ保存されます。
+    </p>
+  </div>
+
+  <section class="card score-card" id="offsite-score"></section>
+  <section class="card" id="offsite-chart"></section>
+
+  <div class="export-bar">
+    <span class="label">この診断結果</span>
+    <button type="button" class="btn btn-sm" id="btn-export">未対応項目をMarkdownで保存</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="btn-reset">回答を初期化</button>
+  </div>
+
+  <div id="groups"></div>
+
+  <section class="card">
+    <p class="eyebrow">CONTEXT</p>
+    <h2 class="card-title">この診断の位置づけ</h2>
+    <p class="card-lead">
+      「GEOとしてパッケージ化されているものの多くは、枠組みを外せば強固な基礎SEOである」(SMX Advanced 2026 / Aleyda Solis)という指摘のとおり、
+      ここに並ぶ設問はAI専用の特殊施策ではありません。<strong>勝敗を決めるのは個別施策ではなく、情報を作り・検証し・流通させ・監視する反復可能な運用システム</strong>です
+      (Will Scott: 明確性 / 接続性 / 遍在性)。設問を一度埋めて終わりにせず、四半期ごとに見直してください。
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>回答はこの端末のブラウザ(localStorage)にのみ保存されます。<a href="./sources.html">判定基準と出典</a></p>
+  </div>
+</footer>
+
+<script type="module" src="./assets/js/checklist.js"></script>
+</body>
+</html>
