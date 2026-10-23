@@ -153,7 +153,8 @@ export function normalizeUrl(input) {
     throw new Error('公開サイトのURLを指定してください');
   }
   for (const key of u.searchParams.keys()) {
-    if (/(?:^|[_-])(?:token|secret|password|signature|credential|authorization|auth|key|sig)(?:$|[_-])/i.test(key) || /^x-(?:amz|goog)-/i.test(key)) {
+    const compact = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (['apikey', 'accesstoken', 'idtoken', 'refreshtoken', 'authtoken', 'clientsecret'].includes(compact) || /(?:^|[_-])(?:token|secret|password|signature|credential|authorization|auth|key|sig)(?:$|[_-])/i.test(key) || /^x-(?:amz|goog)-/i.test(key)) {
       throw new Error('認証キー・署名を含むURLは外部の取得サービスへ送信できません');
     }
   }
