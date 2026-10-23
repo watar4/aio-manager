@@ -147,8 +147,20 @@ export function normalizeUrl(input) {
     throw new Error('URLの形式が正しくありません');
   }
   if (!/^https?:$/.test(u.protocol)) throw new Error('http / https のURLを入力してください');
+  if (u.username || u.password) throw new Error('認証情報を含むURLは外部の取得サービスへ送信できません');
+  const host = u.hostname.toLowerCase();
+  if (/^(?:0|10|127)\./.test(host) || /^169\.254\./.test(host) || /^192\.168\./.test(host) || /^172\.(?:1[6-9]|2\d|3[01])\./.test(host) || /(?:^|\.)(?:localhost|local)$/.test(host)) {
+    throw new Error('公開サイトのURLを指定してください');
+  }
+  for (const key of u.searchParams.keys()) {
+    if (/(?:^|[_-])(?:token|secret|password|signature|credential|authorization|auth|key|sig)(?:$|[_-])/i.test(key) || /^x-(?:amz|goog)-/i.test(key)) {
+      throw new Error('認証キー・署名を含むURLは外部の取得サービスへ送信できません');
+    }
+  }
   if (/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/i.test(u.hostname)) throw new Error('ローカルホストのURLは診断できません(公開URLを指定してください)');
   if (!u.hostname.includes('.')) throw new Error('ホスト名が正しくありません');
+  // Fragments are browser-only state and may carry OAuth tokens. Never proxy them.
+  u.hash = '';
   return u.toString();
 }
 
